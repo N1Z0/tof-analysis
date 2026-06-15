@@ -1,0 +1,41 @@
+{
+  "length_m": 0.574148779430216,
+  "voltage_V": 400.0,
+  "t0_us": -4.7026,
+  "k_us_per_sqrt_mz": 2.0666,
+  "rmse_us": 0.0519,
+  "reference_spectrum": "2026_06_10_012_TOF40eV_LASER_ON_24pct_TmF_200\u00b5s_400KICK.CSV",
+  "background_spectrum": "2026_06_23_030_TOF150eV_NO_GAS_LASER_OFF_5ms.CSV",
+  "anchors": [
+    {
+      "ion": "H+",
+      "mass_amu": 1.007825,
+      "charge": 1,
+      "time_us": -2.631
+    },
+    {
+      "ion": "D+",
+      "mass_amu": 2.014102,
+      "charge": 1,
+      "time_us": -1.801
+    },
+    {
+      "ion": "Tm2+",
+      "mass_amu": 168.93,
+      "charge": 2,
+      "time_us": 14.39
+    },
+    {
+      "ion": "Tm1+",
+      "mass_amu": 168.93,
+      "charge": 1,
+      "time_us": 22.113
+    },
+    {
+      "ion": "TmF1+",
+      "mass_amu": 187.93,
+      "charge": 1,
+      "time_us": 23.606
+    }
+  ]
+}

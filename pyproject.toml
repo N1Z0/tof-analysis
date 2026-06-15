@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tof-analysis"
+version = "0.1.0"
+description = "Time-of-flight MCP spectrum analysis"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "scipy>=1.10",
+    "matplotlib>=3.7",
+    "jupyter>=1.0",
+    "ipywidgets>=8.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["tof_analysis*"]

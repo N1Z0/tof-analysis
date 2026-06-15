@@ -1,0 +1,41 @@
+{
+  "length_m": 0.5499489769260287,
+  "voltage_V": 300.0,
+  "t0_us": -4.7384,
+  "k_us_per_sqrt_mz": 2.2857,
+  "rmse_us": 0.0126,
+  "reference_spectrum": "2026_06_08_012_TOF_80eV_LASER_22pct_500\u00b5s.CSV",
+  "background_spectrum": "2026_06_23_030_TOF150eV_NO_GAS_LASER_OFF_5ms.CSV",
+  "anchors": [
+    {
+      "ion": "H+",
+      "mass_amu": 1.007825,
+      "charge": 1,
+      "time_us": -2.44
+    },
+    {
+      "ion": "D+",
+      "mass_amu": 2.014102,
+      "charge": 1,
+      "time_us": -1.509
+    },
+    {
+      "ion": "Ho3+",
+      "mass_amu": 164.93,
+      "charge": 3,
+      "time_us": 12.221
+    },
+    {
+      "ion": "Ho2+",
+      "mass_amu": 164.93,
+      "charge": 2,
+      "time_us": 16.032
+    },
+    {
+      "ion": "Ho1+",
+      "mass_amu": 164.93,
+      "charge": 1,
+      "time_us": 24.6
+    }
+  ]
+}
