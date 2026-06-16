@@ -11,11 +11,30 @@ Each CSV file is one trace: **oscilloscope time (µs)** vs **MCP signal (mV)**. 
 
 ## Quick start
 
+### macOS / Linux
+
 ```bash
 cd "TOF Analysis"
 bash scripts/setup_env.sh
 source .venv/bin/activate
 ```
+
+### Windows
+
+1. Install **Python 3.9+** from [python.org](https://www.python.org/downloads/) — tick **“Add python.exe to PATH”** during install.  
+2. Install **Cursor** or **VS Code** with the **Python** and **Jupyter** extensions.  
+3. Clone the repo, then in **PowerShell** (from the project folder):
+
+```powershell
+cd "TOF Analysis"
+powershell -ExecutionPolicy Bypass -File scripts\setup_env.ps1
+.\.venv\Scripts\Activate.ps1
+```
+
+Or double-click `scripts\setup_env.bat`.
+
+4. In Cursor/VS Code: **Python: Select Interpreter** → `.venv\Scripts\python.exe`  
+5. Open a notebook → kernel **Python (TOF Analysis)**.
 
 Open a notebook in Cursor / Jupyter and select kernel **Python (TOF Analysis)**.
 
@@ -42,7 +61,9 @@ TOF Analysis/
 │   ├── analysis.ipynb
 │   └── gas_45_dwell_comparison.ipynb
 ├── scripts/
-│   └── setup_env.sh
+│   ├── setup_env.sh       ← macOS / Linux
+│   ├── setup_env.ps1      ← Windows (PowerShell)
+│   └── setup_env.bat      ← Windows (double-click)
 └── tof_analysis/              ← Python package
 ```
 
@@ -105,7 +126,7 @@ UI choices (calibration, filters, ion ticks, charge ranges, time window) are **r
 ## Sharing with the lab
 
 1. Copy or git-clone this folder.  
-2. Everyone runs `bash scripts/setup_env.sh` once.  
+2. Run setup once (`setup_env.sh` on Mac/Linux, `setup_env.ps1` on Windows).  
 3. Share **`calibration/*.json`** and optionally **`config/custom_ions.json`** and **`config/analysis_workbench.json`** (ion defaults).  
 4. Drop new CSVs into `DATA/` — they appear automatically in the analysis notebook.
 
@@ -132,11 +153,14 @@ Lenses and imperfect voltage are absorbed into **t₀** and **L_eff**. Correct i
 | Problem | Fix |
 |---------|-----|
 | `No module named tof_analysis` | Kernel must be **Python (TOF Analysis)** / `.venv` |
+| `python` not found (Windows) | Re-install Python with **Add to PATH**; reopen terminal |
+| PowerShell script blocked | `powershell -ExecutionPolicy Bypass -File scripts\setup_env.ps1` |
 | No widgets / buttons | Re-run cell; or `jupyter lab notebooks/…` in browser |
 | Ion list layout broken / overlapping | Known Cursor quirk — use Jupyter in browser if needed |
 | Wrong folder open | Open **TOF Analysis** as workspace root (must contain `DATA/`) |
 | No calibration in dropdown | Run calibration notebook and **Save calibration** first |
 | Theory lines shifted vs dips | Re-fit calibration on absolute time; check scope window matches between shots |
+| CSV filenames with `µ` | Supported; keep oscilloscope export encoding as UTF-8 if possible |
 
 ---
 

@@ -1,6 +1,6 @@
 {
-  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
   "python.terminal.activateEnvironment": true,
+  "python.venvPath": "${workspaceFolder}",
   "notebook.kernelProviderAssociations": [
     {
       "viewType": "jupyter-notebook",
