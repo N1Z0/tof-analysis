@@ -21,4 +21,6 @@ figures/
 # Per-user analysis UI state (auto-created; share manually if desired)
 config/analysis_workbench.json
 
-DATA/
+# Local spectra (each user adds their own CSV files)
+DATA/*
+!DATA/README.md

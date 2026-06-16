@@ -26,6 +26,16 @@ from tof_analysis.io import load_spectrum
 from tof_analysis.physics import argon_ions
 from tof_analysis.reference_calibration import load_reference_calibration
 
+_EMPTY_DATA_MSG = "(no CSV files in DATA/ — add spectra first)"
+
+
+def _pick_label(labels: list[str], *patterns: str) -> str | None:
+    for pattern in patterns:
+        for label in labels:
+            if pattern in label:
+                return label
+    return None
+
 
 class CalibrationWorkbench:
     """Widget-based UI for assigning ions to dips and fitting TOF calibration."""
@@ -40,19 +50,35 @@ class CalibrationWorkbench:
         self._assignment_rows: list[tuple[widgets.Checkbox, widgets.Dropdown]] = []
         self._build_widgets()
         self._wire_events()
-        self._load_default_spectrum()
+        if self.catalog.entries:
+            self._load_default_spectrum()
+        else:
+            self.data_info.value = (
+                f"<div style='padding:8px 12px;background:#fef2f2;border-left:4px solid #dc2626;"
+                f"border-radius:4px;font-size:13px'>No spectra found in "
+                f"<code>{self.data_dir}</code>. Copy oscilloscope CSV files into "
+                f"<code>DATA/</code> and re-run this notebook cell.</div>"
+            )
 
     def _build_widgets(self):
-        labels = sorted(self.catalog.to_frame()["label"].tolist())
+        labels = self.catalog.labels
+        if not labels:
+            labels = [_EMPTY_DATA_MSG]
+            gas_default = _EMPTY_DATA_MSG
+            bg_default = "(none)"
+        else:
+            gas_default = _pick_label(labels, "013", "GAS") or labels[0]
+            bg_default = _pick_label(labels, "030", "NO_GAS") or "(none)"
+        self.data_info = widgets.HTML(value="")
         self.gas_dd = widgets.Dropdown(
             options=labels,
-            value=next(l for l in labels if "013" in l and "GAS" in l),
+            value=gas_default,
             description="Gas file:",
             layout=widgets.Layout(width="95%"),
         )
         self.bg_dd = widgets.Dropdown(
             options=["(none)"] + labels,
-            value=next(l for l in labels if "030" in l and "NO_GAS" in l),
+            value=bg_default,
             description="Background:",
             layout=widgets.Layout(width="95%"),
         )
@@ -97,10 +123,26 @@ class CalibrationWorkbench:
         self.use_diff.observe(lambda _: self._reload_spectrum(), names="value")
 
     def _resolve_path(self, label: str) -> Path:
+        if label.startswith("("):
+            raise ValueError("Add CSV spectra to the DATA folder first.")
         match = next(m for m in self.catalog.entries if m.label == label)
         return match.path
 
     def _reload_spectrum(self):
+        if not self.catalog.entries or self.gas_dd.value.startswith("("):
+            self.spectrum = None
+            self.dips = []
+            self.assignments = []
+            self._assignment_rows.clear()
+            self.assignment_box.children = []
+            self.data_info.value = (
+                f"<div style='padding:8px 12px;background:#fef2f2;border-left:4px solid #dc2626;"
+                f"border-radius:4px;font-size:13px'>No spectra found in "
+                f"<code>{self.data_dir}</code>. Copy oscilloscope CSV files into "
+                f"<code>DATA/</code> and re-run this notebook cell.</div>"
+            )
+            return
+        self.data_info.value = ""
         gas_path = self._resolve_path(self.gas_dd.value)
         bg_label = self.bg_dd.value
         bg_path = None if bg_label == "(none)" else self._resolve_path(bg_label)
@@ -297,6 +339,7 @@ class CalibrationWorkbench:
                     "Detect dips, assign ions, fit t = k√(m/z) + t₀, save to calibration/</p>"
                 ),
                 widgets.HTML("<h3 style='margin:12px 0 6px 0'>1 · Spectrum</h3>"),
+                self.data_info,
                 self.gas_dd,
                 self.bg_dd,
                 self.use_diff,

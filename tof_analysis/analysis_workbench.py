@@ -94,10 +94,13 @@ class AnalysisWorkbench:
         return self._saved_state.get(key, default)
 
     def _build_widgets(self):
-        labels = sorted(self.catalog.to_frame()["label"].tolist())
-        dwell_opts = ["any"] + sorted(
-            self.catalog.to_frame()["dwell_us"].dropna().unique().astype(int).tolist()
-        )
+        labels = self.catalog.labels
+        frame = self.catalog.to_frame()
+        if labels:
+            dwell_opts = ["any"] + sorted(frame["dwell_us"].dropna().unique().astype(int).tolist())
+        else:
+            labels = ["(no CSV files in DATA/ — add spectra first)"]
+            dwell_opts = ["any"]
         dwell_default = self._saved("dwell", "any")
         if dwell_default not in dwell_opts:
             dwell_default = "any"

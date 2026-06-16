@@ -18,11 +18,27 @@ class SpectrumCatalog:
     @classmethod
     def from_directory(cls, data_dir: Path | str) -> "SpectrumCatalog":
         data_dir = Path(data_dir)
+        data_dir.mkdir(parents=True, exist_ok=True)
         paths = sorted(data_dir.glob("*.CSV")) + sorted(data_dir.glob("*.csv"))
         entries = [parse_filename(path) for path in paths]
         return cls(data_dir=data_dir, entries=entries)
 
+    @property
+    def labels(self) -> list[str]:
+        return sorted(entry.label for entry in self.entries)
+
     def to_frame(self) -> pd.DataFrame:
+        columns = [
+            "path",
+            "label",
+            "date",
+            "shot",
+            "tof_ev",
+            "gas",
+            "laser_on",
+            "laser_power_pct",
+            "dwell_us",
+        ]
         rows = []
         for entry in self.entries:
             rows.append(
@@ -38,6 +54,8 @@ class SpectrumCatalog:
                     "dwell_us": entry.dwell_us,
                 }
             )
+        if not rows:
+            return pd.DataFrame(columns=columns)
         return pd.DataFrame(rows)
 
     def filter(
