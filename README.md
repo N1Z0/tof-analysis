@@ -153,6 +153,7 @@ Lenses and imperfect voltage are absorbed into **t₀** and **L_eff**. Correct i
 | Problem | Fix |
 |---------|-----|
 | `No module named tof_analysis` | Kernel must be **Python (TOF Analysis)** / `.venv` |
+| Old code after `git pull` | Re-run setup or `pip install -e .` in the project folder, then restart kernel |
 | `python` not found (Windows) | Re-install Python with **Add to PATH**; reopen terminal |
 | PowerShell script blocked | `powershell -ExecutionPolicy Bypass -File scripts\setup_env.ps1` |
 | No widgets / buttons | Re-run cell; or `jupyter lab notebooks/…` in browser |

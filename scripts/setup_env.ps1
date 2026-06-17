@@ -11,7 +11,7 @@ if ($LASTEXITCODE -ne 0) {
 
 $py = Join-Path $PWD ".venv\Scripts\python.exe"
 
-Write-Host "-> Installing package..."
+Write-Host "-> Installing package (re-run after git pull)..."
 & $py -m pip install --upgrade pip -q
 & $py -m pip install -e . -q
 
